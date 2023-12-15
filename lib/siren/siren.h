@@ -5,27 +5,17 @@
 class Siren
 {
 protected:
-    bool _bMotorState, _bStateChanging = false, _bHasTimedOut = false;
-    int _motorOnPin, _motorOffPin;
-    uint32_t _switchingDelayMs = 1000, _maxOnTimeMin = 30;
+    int _sirenPin;
+    uint32_t _maxOnTimeSec = 40;
     int64_t _usLastStatus = 0;
+    uint8_t curBeepSequence = 0;
 
 public:
-    void begin(int motorOnPin, int motorOffPin);
-
-    uint32_t getSwitchingDelay();
-    void setSwitchingDelay(uint32_t ms);
-
-    uint32_t getMaxOnTimeMins();
-    void setMaxOnTimeMins(uint32_t min);
-
+    void begin(int sirenPin);
     void on();
     void off();
+    void beep(uint8_t beepCount = 1);
     bool state();
-    bool stateChanging();
-    bool hasTimedOut();
-
-    int64_t lastStatusMicros();
-
+    bool inBeepSequence();
     void loop();
 };
