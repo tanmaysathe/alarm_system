@@ -12,9 +12,9 @@
 #define RF_IN 32
 
 // LED outputs
-#define ARM_LED 14              // Off by default, on if armed, paniced or intrusion detected,
-#define POWER_WIFI_LED 12       // Blink until connected to mqtt, stable on connection
-#define RF_LED 13               // Blink on RF activity
+#define ARM_LED 14        // Off by default, on if armed, paniced or intrusion detected,
+#define POWER_WIFI_LED 12 // Blink until connected to mqtt, stable on connection
+#define RF_LED 13         // Blink on RF activity
 
 // Motor outputs
 #define SIREN 16
@@ -22,12 +22,29 @@
 #define OUTPUT2 18
 #define OUTPUT3 19
 
+#define INPUT_CHECK_MS 100
+
 // State flags
 #define BASE_FLAG 0x00000001
 
-#define FLAG_ARM (BASE_FLAG << 1)
-#define FLAG_PANIC (BASE_FLAG << 2)
-#define FLAG_INTRUSION (BASE_FLAG << 3)
+union SecuritySystemStateParser
+{
+    uint32_t rawData;
+    struct SecuritySystemValues
+    {
+        uint32_t armState : 2;
+        uint32_t bPanic : 1;
+        uint32_t bIntrusion : 1;
+        uint32_t sensorCount : 8;
+        uint32_t reserved : 20;
+    } val;
+};
+
+#define ARM_STATE_DISARMED 0
+#define ARM_STATE_ARMED 1
+#define ARM_STATE_HOMEARMED 2
+// #define ARM_STATE_RESERVED 3
+
 
 // Select device ID from device types class
 #define DEVICE_TYPE DeviceTypes::securitySystem
