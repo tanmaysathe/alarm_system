@@ -1,7 +1,7 @@
 #include <Arduino.h>
-#include "motor.h"
+#include "siren.h"
 
-void Motor::begin(int motorOnPin, int motorOffPin)
+void Siren::begin(int motorOnPin, int motorOffPin)
 {
     _motorOnPin = motorOnPin;
     _motorOffPin = motorOffPin;
@@ -15,12 +15,12 @@ void Motor::begin(int motorOnPin, int motorOffPin)
     off();
 }
 
-uint32_t Motor::getSwitchingDelay()
+uint32_t Siren::getSwitchingDelay()
 {
     return _switchingDelayMs;
 }
 
-void Motor::setSwitchingDelay(uint32_t ms)
+void Siren::setSwitchingDelay(uint32_t ms)
 {
     if (ms > 0)
     {
@@ -28,12 +28,12 @@ void Motor::setSwitchingDelay(uint32_t ms)
     }
 }
 
-uint32_t Motor::getMaxOnTimeMins()
+uint32_t Siren::getMaxOnTimeMins()
 {
     return _maxOnTimeMin;
 }
 
-void Motor::setMaxOnTimeMins(uint32_t min)
+void Siren::setMaxOnTimeMins(uint32_t min)
 {
     if (min > 0)
     {
@@ -41,7 +41,7 @@ void Motor::setMaxOnTimeMins(uint32_t min)
     }
 }
 
-void Motor::on()
+void Siren::on()
 {
     if (_bStateChanging || _bMotorState)
         return;
@@ -52,7 +52,7 @@ void Motor::on()
     _bHasTimedOut = false;
 }
 
-void Motor::off()
+void Siren::off()
 {
     if (_bStateChanging || !_bMotorState)
         return;
@@ -63,27 +63,27 @@ void Motor::off()
     _bHasTimedOut = false;
 }
 
-bool Motor::state()
+bool Siren::state()
 {
     return _bMotorState;
 }
 
-bool Motor::stateChanging()
+bool Siren::stateChanging()
 {
     return _bStateChanging;
 }
 
-bool Motor::hasTimedOut()
+bool Siren::hasTimedOut()
 {
     return _bHasTimedOut;
 }
 
-int64_t Motor::lastStatusMicros()
+int64_t Siren::lastStatusMicros()
 {
     return _usLastStatus;
 }
 
-void Motor::loop()
+void Siren::loop()
 {
     int64_t curMicros = esp_timer_get_time();
     if ((curMicros - _usLastStatus) > (_switchingDelayMs * 1000) && _bStateChanging)

@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include <Preferences.h>
 
-class Motor
+class Siren
 {
 protected:
     bool _bMotorState, _bStateChanging = false, _bHasTimedOut = false;
