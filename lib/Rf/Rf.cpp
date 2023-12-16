@@ -25,7 +25,7 @@ void IRAM_ATTR edgeDetectedCallback()
 
 void Rf::NoCode500msCallback()
 {
-  digitalWrite(_RF_led, HIGH);
+  digitalWrite(_RF_led, LOW);
   PrevCode = 0;
 }
 /**
@@ -39,7 +39,7 @@ void Rf::begin(int RF_in, int RF_led)
   _RF_led = RF_led;
   pinMode(_RF_in, INPUT_PULLUP);
   pinMode(_RF_led, OUTPUT);
-  digitalWrite(_RF_led, HIGH);
+  digitalWrite(_RF_led, LOW);
   RFDataIndex = 0;
   attachInterrupt(digitalPinToInterrupt(_RF_in), edgeDetectedCallback, CHANGE);
   // PRINT("RF decoder init complete\n");
@@ -49,8 +49,7 @@ void Rf::loop()
 {
   if (Code)
   {
-    if (PrevCode != Code)
-      PrevCode = Code;
+    PrevCode = Code;
     Code = 0;
   }
 
@@ -107,7 +106,7 @@ void Rf::CheckRFData()
   if (i == 25)
   {
     // Turn on rf LED & Turn off rfLED after 500ms of inactivity
-    digitalWrite(_RF_led, LOW);
+    digitalWrite(_RF_led, HIGH);
     noCode500msTicker.detach();
     noCode500msTicker.once_ms(500, Rf::NoCode500msCallback);
     Code >>= 1;         // Remove Sync bit
