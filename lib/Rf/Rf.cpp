@@ -118,10 +118,10 @@ void Rf::CheckRFData()
   avg0 /= bitCnt0;
   avg1 /= bitCnt1;
 
-  unsigned long bit0Low = avg0 * 0.6;
-  unsigned long bit0High = avg0 * 1.6;
-  unsigned long bit1Low = avg1 * 0.6;
-  unsigned long bit1High = avg1 * 1.6;
+  unsigned long bit0Low = avg0 * 0.7;
+  unsigned long bit0High = avg0 * 1.5;
+  unsigned long bit1Low = avg1 * 0.7;
+  unsigned long bit1High = avg1 * 1.5;
 
   for (i = 0; i < 25; i++)
   {
@@ -136,6 +136,7 @@ void Rf::CheckRFData()
     }
     else
     {
+      // Serial.printf("min0=%d, avg0=%d, max0=%d, min1=%d, avg1=%d, max1=%d, RFData[%d]=%d\n", min0, avg0, max0, min1, avg1, max1, i, RFData[i]);
       break;
     }
   }
