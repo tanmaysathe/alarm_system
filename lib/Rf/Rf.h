@@ -16,7 +16,6 @@ class Rf
 private:
   /* Default WIFI AP Details */
   unsigned long Data, Temp;
-  int _RF_in;
   byte RFDataIndex = 0;
   unsigned long RFData[26] = {0};
   void CheckRFData();
@@ -27,3 +26,5 @@ public:
   void begin(int RF_in, int RF_led);
   void loop();
 };
+
+extern Rf rf;
