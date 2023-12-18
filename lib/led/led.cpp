@@ -27,10 +27,8 @@ void Led::toggle()
     digitalWrite(_pin, !digitalRead(_pin));
 }
 
-void Led::blink(uint32_t onMs, uint32_t offMs)
+void Led::blink()
 {
-    _onMs = onMs > 0 ? onMs : _onMs;
-    _offMs = offMs > 0 ? offMs : _offMs;
     _bIsBlinking = true;
 }
 

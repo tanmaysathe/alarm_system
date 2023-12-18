@@ -7,7 +7,7 @@ class Led
 protected:
     int64_t prevMicros = 0;
     bool _bIsBlinking;
-    uint32_t _onMs, _offMs;
+    const uint32_t _onMs = 500, _offMs = 500;
     int _pin;
 
 public:
@@ -15,7 +15,7 @@ public:
     void on();
     void off();
     void toggle();
-    void blink(uint32_t onMs = 500, uint32_t offMs = 500);
+    void blink();
     void set(bool bState);
     bool state();
     bool isBlinking();
