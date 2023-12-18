@@ -3,9 +3,7 @@
 #include <led.h>
 #include <siren.h>
 #include <WiFi.h>
-#include <debug_print/debug_print.h>
 
-Rf rf;
 Siren siren;
 Led armLed, wifiLed;
 
