@@ -9,18 +9,13 @@
 #define RESET_PIN 0
 
 // RF signal input
-#define RF_IN 32
+#define RF_IN 4
 
-// LED outputs
+// Siren & LEDs output
+#define SIREN_PIN 25
+#define POWER_WIFI_LED 13 // Blink until connected to wifi, stable on connection
+#define RF_LED 12         // Blink on RF code received, off by default
 #define ARM_LED 14        // Off by default, on if armed, paniced or intrusion detected,
-#define POWER_WIFI_LED 12 // Blink until connected to mqtt, stable on connection
-#define RF_LED 13         // Blink on RF activity
-
-// Motor outputs
-#define SIREN_PIN 16
-#define OUTPUT1 17
-#define OUTPUT2 18
-#define OUTPUT3 19
 
 #define WIFI_CHECK_MS 100
 
