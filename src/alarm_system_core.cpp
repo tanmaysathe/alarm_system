@@ -59,6 +59,7 @@ void alarmSystemLoop()
         }
         curState.val.lastSensor = rf.Code;
         curState.val.lastSensorType = sensorType;
+        DebugF("state=%X\n", curState.rawData);
     }
 
     // If state is changed through RF or mqtt, update siren & arm led state
