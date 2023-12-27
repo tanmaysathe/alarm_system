@@ -50,5 +50,5 @@
         "typeinfo": "cpp"
     },
     "cmake.configureOnOpen": true,
-    "cmake.sourceDirectory": "D:/sense-lifestyle/firmware/wired_sensors/wiredSmokeSensor/.pio/libdeps/dev/ArduinoJson"
+    "cmake.sourceDirectory": "D:/sense-lifestyle/firmware/mains_powered/controllers/alarm_system/.pio/libdeps/dev/ArduinoJson",
 }
