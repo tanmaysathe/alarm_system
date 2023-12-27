@@ -33,8 +33,9 @@ union AlarmSystemStateParser
     struct AlarmSystemValues
     {
         uint32_t state : 3;
-        uint32_t sendUnknownRF : 1;
-        uint32_t reserved : 2;
+        uint32_t bSendUnknownRF : 1;
+        uint32_t bStateChanged : 1;
+        uint32_t reserved : 1;
         uint32_t lastSensorType : 3;
         uint32_t lastSensor : 23;
     } val;

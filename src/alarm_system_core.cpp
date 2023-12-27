@@ -30,7 +30,6 @@ uint8_t getSensorType(uint32_t rfCode)
 
 void alarmSystemLoop()
 {
-    static AlarmSystemStateParser prevState;
     AlarmSystemStateParser curState;
     curState.rawData = sense.getState(ALARM_STATE_INDEX);
 
@@ -39,54 +38,58 @@ void alarmSystemLoop()
     if (rf.Code)
     {
         uint8_t sensorType = getSensorType(rf.Code);
+        curState.val.lastSensor = rf.Code;
+        curState.val.lastSensorType = sensorType;
+        curState.val.bStateChanged = false;
         switch (sensorType)
         {
         case SENSOR_TYPE_DISARM:
-            curState.val.state = ALARM_STATE_DISARMED;
+            if (curState.val.state != ALARM_STATE_DISARMED)
+            {
+                armLed.off();
+                siren.beep(2);
+                curState.val.state = ALARM_STATE_DISARMED;
+                curState.val.bStateChanged = true;
+            }
             break;
         case SENSOR_TYPE_ARM:
-            curState.val.state = ALARM_STATE_ARMED;
+            if (curState.val.state != ALARM_STATE_ARMED)
+            {
+                armLed.on();
+                siren.beep(1);
+                curState.val.state = ALARM_STATE_ARMED;
+                curState.val.bStateChanged = true;
+            }
             break;
         case SENSOR_TYPE_HOMEARM:
-            curState.val.state = ALARM_STATE_ARMED;
+            if (curState.val.state != ALARM_STATE_HOMEARMED)
+            {
+                armLed.on();
+                siren.beep(1);
+                curState.val.state = ALARM_STATE_HOMEARMED;
+                curState.val.bStateChanged = true;
+            }
             break;
         case SENSOR_TYPE_INTRUSION:
-            curState.val.state = ALARM_STATE_INTRUSION;
+            if (curState.val.state != ALARM_STATE_INTRUSION)
+            {
+                siren.on();
+                curState.val.state = ALARM_STATE_INTRUSION;
+                curState.val.bStateChanged = true;
+            }
             break;
         case SENSOR_TYPE_PANIC:
-            curState.val.state = ALARM_STATE_PANIC;
+            if (curState.val.state != ALARM_STATE_PANIC)
+            {
+                siren.on();
+                curState.val.state = ALARM_STATE_PANIC;
+                curState.val.bStateChanged = true;
+            }
             break;
         }
-        curState.val.lastSensor = rf.Code;
-        curState.val.lastSensorType = sensorType;
         DebugF("state=%X\n", curState.rawData);
-    }
-
-    // If state is changed through RF or mqtt, update siren & arm led state
-    if (curState.val.state != prevState.val.state)
-    {
-        switch (curState.val.state)
-        {
-        case ALARM_STATE_DISARMED:
-            armLed.off();
-            siren.beep(2);
-            break;
-        case ALARM_STATE_ARMED:
-            armLed.on();
-            siren.beep(1);
-            break;
-        case ALARM_STATE_HOMEARMED:
-            armLed.on();
-            siren.beep(1);
-            break;
-        case ALARM_STATE_INTRUSION:
-            siren.on();
-            break;
-        case ALARM_STATE_PANIC:
-            siren.on();
-            break;
-        }
-        sense.setState(ALARM_STATE_INDEX, curState.rawData);
+        if (curState.val.bStateChanged || curState.val.bSendUnknownRF)
+            sense.setState(ALARM_STATE_INDEX, curState.rawData);
     }
 
     // Refresh wifi led state every 100ms (WIFI_CHECK_MS)
@@ -102,5 +105,4 @@ void alarmSystemLoop()
     siren.loop();
     armLed.loop();
     wifiLed.loop();
-    prevState.rawData = curState.rawData;
 }
